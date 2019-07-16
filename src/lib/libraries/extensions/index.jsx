@@ -46,7 +46,128 @@ import gdxforInsetIconURL from './gdxfor/gdxfor-small.svg';
 import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
+
 export default [
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Teachable Classifier"
+                description="Name for the 'Teachable Classifier' extension"
+                id="gui.extension.teachableClassifier.name"
+            />
+        ),
+        extensionId: 'teachableClassifier',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Teach your computer how to classify images."
+                description="Description for the 'Teachable Classifier' extension"
+                id="gui.extension.teachableClassifier.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Teachable Classifier NN"
+                description="Name for the 'Teachable Classifier NN' extension"
+                id="gui.extension.teachableClassifierNN.name"
+            />
+        ),
+        extensionId: 'teachableClassifierNN',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Teach your computer how to classify images with a neural network."
+                description="Description for the 'Teachable Classifier NN' extension"
+                id="gui.extension.teachableClassifierNN.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Reinforcement Learning"
+                description="Name for the 'Reinforcement Learning' extension"
+                id="gui.extension.reinforcementLearning.name"
+            />
+        ),
+        extensionId: 'reinforcementLearning',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Teach your computer how to play games."
+                description="Description for the 'Reinforcement Learning' extension"
+                id="gui.extension.reinforcementLearning.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Text Generation"
+                description="Name for the 'Text Generation' extension"
+                id="gui.extension.textGeneration.name"
+            />
+        ),
+        extensionId: 'textGeneration',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Make a neural network generate text."
+                description="Description for the 'Text Generation' extension"
+                id="gui.extension.textGeneration.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Speech Commands"
+                description="Name for the 'Speech Commands' extension"
+                id="gui.extension.speechCommands.name"
+            />
+        ),
+        extensionId: 'speechCommands',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Control a project with your voice."
+                description="Description for the 'Speech Commands' extension"
+                id="gui.extension.speechCommands.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Weather"
+                description="Name for the 'Weather' extension"
+                id="gui.extension.weather.name"
+            />
+        ),
+        extensionId: 'weather',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Get weather information."
+                description="Description for the 'Weather' extension"
+                id="gui.extension.weather.description"
+            />
+        ),
+        featured: true
+    },
     {
         name: (
             <FormattedMessage
