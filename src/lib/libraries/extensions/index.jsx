@@ -59,9 +59,10 @@ export default [
         extensionId: 'teachableClassifier',
         iconURL: musicIconURL,
         insetIconURL: musicInsetIconURL,
+        launchPeripheralConnectionFlow: true,
         description: (
             <FormattedMessage
-                defaultMessage="Teach your computer how to classify images."
+                defaultMessage="Teach your computer to see."
                 description="Description for the 'Teachable Classifier' extension"
                 id="gui.extension.teachableClassifier.description"
             />
@@ -81,7 +82,7 @@ export default [
         insetIconURL: musicInsetIconURL,
         description: (
             <FormattedMessage
-                defaultMessage="Teach your computer how to classify images with a neural network."
+                defaultMessage="Use a neural network to see."
                 description="Description for the 'Teachable Classifier NN' extension"
                 id="gui.extension.teachableClassifierNN.description"
             />
@@ -101,7 +102,7 @@ export default [
         insetIconURL: musicInsetIconURL,
         description: (
             <FormattedMessage
-                defaultMessage="Teach your computer how to play games."
+                defaultMessage="Teach your computer to play games."
                 description="Description for the 'Reinforcement Learning' extension"
                 id="gui.extension.reinforcementLearning.description"
             />
