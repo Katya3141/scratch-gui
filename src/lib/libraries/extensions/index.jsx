@@ -72,6 +72,27 @@ export default [
     {
         name: (
             <FormattedMessage
+                defaultMessage="Teachable Audio Classifier"
+                description="Name for the 'Teachable Audio Classifier' extension"
+                id="gui.extension.teachableAudioClassifier.name"
+            />
+        ),
+        extensionId: 'teachableAudioClassifier',
+        iconURL: musicIconURL,
+        insetIconURL: musicInsetIconURL,
+        launchPeripheralConnectionFlow: true,
+        description: (
+            <FormattedMessage
+                defaultMessage="Teach your computer to hear."
+                description="Description for the 'Teachable Audio Classifier' extension"
+                id="gui.extension.teachableAudioClassifier.description"
+            />
+        ),
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
                 defaultMessage="Music"
                 description="Name for the 'Music' extension"
                 id="gui.extension.music.name"

@@ -25,7 +25,7 @@ class LabelTile extends React.Component {
 
     render () {
         return (
-            <Box className={styles.labelTile}>
+            <Box className={classNames(styles.labelTile, this.props.exampleCount < 5 ? styles.labelTileIncomplete : styles.labelTileComplete)}>
                 <Box className={styles.verticalLayout}>
                     <Box className={styles.labelTileHeader}>
                         <Box className={styles.labelTileName}>
@@ -44,6 +44,10 @@ class LabelTile extends React.Component {
                                 />
                             </Box>
                         ))}
+                        {this.props.exampleCount < 5 ? 
+                            <div>This label needs more examples!</div> :
+                            null
+                        }
                     </Box>
                 </Box>
             </Box>

@@ -27,7 +27,8 @@ class ExampleEditor extends React.Component {
             'handleNewExample',
             'countdown',
             'createNewExamples',
-            'takePicture'
+            'takePictures',
+            'takeSinglePicture'
         ]);
         this.state = {
             trainInfo: "Press Train when you're ready!",
@@ -35,20 +36,25 @@ class ExampleEditor extends React.Component {
             loaded: false,
             access: false,
             training: false,
+            countdown: true,
+            multiPicture: true,
+            capture: false,
             newExamples: []
         };
-        this.loadedText = "";
-        this.loadingText = "Loading Camera...";
     }
-    componentWillUnmount () {
+    componentWillUnmount () {   //if the modal is closed, clear the interval handler and turn off the video
         clearInterval(this.state.intervalHandler);
         this.videoDevice.disableVideo();
     }
     handleGoBack () {    //go back to the previous screen (which might be the model editor or the label editor, depending on whether or not this is a new label)
         this.videoDevice.disableVideo();
-        this.props.activeLabel in this.props.imageData ? 
-            this.props.onEditLabel(this.props.activeLabel) :
+        if (this.props.activeLabel in this.props.imageData) {
+            this.props.onNewExamples(this.state.newExamples, false);
+            this.props.onEditLabel(this.props.activeLabel);
+        } else {
+            this.props.onNewExamples(this.state.newExamples, true);
             this.props.onEditModel();
+        }
     }
     setCanvas (canvas) {    //set up the video on the canvas
         this.canvas = canvas;
@@ -57,50 +63,70 @@ class ExampleEditor extends React.Component {
             this.videoDevice.enableVideo(this.handleAccess, this.handleLoaded);
         }
     }
-    handleLoaded () {
+    handleLoaded () {   //change state when camera loaded
         this.setState ({
             loaded: true
         })
     }
-    handleAccess () {
+    handleAccess () {   //change state when camera is given access
         this.setState ({
             access: true
         })
     }
-    handleNewExample () {   //take a picture and call props.onNewExample with the new image data
-        this.setState({trainInfo: 3, training: true, intervalHandler: setInterval(this.countdown, 1000)});
+    handleNewExample () {   //take pictures and call props.onNewExample with the new image data
+        if(this.state.countdown) {
+            this.setState({trainInfo: 3, training: true, intervalHandler: setInterval(this.countdown, 1000)});
+        } else {
+            this.createNewExamples();
+        }
     }
 
-    countdown () {
+    countdown () {  //handles countdown before training begins
         if (this.state.trainInfo > 1) {
             this.setState({trainInfo: this.state.trainInfo - 1});
         } else {
-            this.setState({trainInfo: "training..."});
             clearInterval(this.state.intervalHandler);
             this.createNewExamples();
         }
     }
 
-    createNewExamples () {
+    createNewExamples () {  //calls either takePictures or takeSinglePicture depending on whether "take 10 pictures" is checked
         if (this.canvas) {
-            this.setState({intervalHandler: setInterval(this.takePicture, 200)})
+            if (this.state.multiPicture) {
+                this.setState({trainInfo: "training..."});
+                setTimeout(this.takePictures, 200, 10);
+            } else {
+                this.takeSinglePicture();
+            }
         }
     }
 
-    takePicture () {
-        const frame = this.videoDevice._videoProvider.getFrame({
-            format: 'image-data'
+    takePictures (numPictures) {    //recursive function to take multiple pictures and then go back to the model or label editor
+        this.setState({capture: true}, () => {
+            const frame = this.videoDevice._videoProvider.getFrame({
+                format: 'image-data'
+            });
+            if (frame) {
+                this.setState({newExamples: this.state.newExamples.concat([frame])}, () => {
+                    if (numPictures === 1) {
+                        setTimeout(this.handleGoBack, 200);
+                    } else {
+                        setTimeout(this.takePictures, 200, numPictures - 1);
+                    }
+                });
+            }
         });
-        if (frame) {
-            this.setState({newExamples: this.state.newExamples.concat([frame])})
-        }
-        if (this.state.newExamples.length === 10) {
-            clearInterval(this.state.intervalHandler);
-            this.videoDevice.disableVideo();
-            this.props.activeLabel in this.props.imageData ?
-                this.props.onNewExamples(this.state.newExamples, false) :
-                this.props.onNewExamples(this.state.newExamples, true);
-        }
+    }
+
+    takeSinglePicture () {  //takes a single picture (different function from takePictures because it should stay in the example editor)
+        this.setState({capture: true}, () => {
+            const frame = this.videoDevice._videoProvider.getFrame({
+                format: 'image-data'
+            });
+            if (frame) {
+                this.setState({trainInfo: "Press Train when you're ready!", training: false, newExamples: this.state.newExamples.concat([frame])});
+            }
+        });
     }
 
     render () {
@@ -119,19 +145,31 @@ class ExampleEditor extends React.Component {
                                     width="960"
                             />
                             {this.state.access ?
-                                <div className={classNames(styles.loadingCameraMessage)}>{this.state.loaded ? this.loadedText : this.loadingText}</div>
-                                : <div className={classNames(styles.loadingCameraMessage)}>We need your permission to use your camera</div>}
+                                (<div className={classNames(styles.loadingCameraMessage)}>{this.state.loaded ? null : "Loading Camera..."}</div>) :
+                                (<div className={classNames(styles.loadingCameraMessage)}>We need your permission to use your camera</div>)}
+                            {this.state.capture ? (
+                                <div className={styles.flashOverlay} onAnimationEnd={() => {this.setState({ capture: false })}}/>
+                            ) : null}
+                        </Box>
+                        <Box className={classNames(styles.instructions)}>
+                            <Box className={classNames(styles.checkbox)}>
+                                <input type="checkbox" onChange={() => {this.setState({countdown: !this.state.countdown})}} defaultChecked={this.state.countdown}/>
+                                <div>Countdown timer</div>
+                            </Box>
+                            <Box className={classNames(styles.checkbox)}>
+                                <input type="checkbox" onChange={() => {this.setState({multiPicture: !this.state.multiPicture})}} defaultChecked={this.state.multiPicture}/>
+                                <div>Take 10 pictures</div>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
                 <Box className={classNames(styles.bottomArea)}>
                     {this.state.training ?
-                        <Box className={classNames(styles.bottomAreaItem, styles.buttonRow)}></Box>
-                        : <Box className={classNames(styles.bottomAreaItem, styles.buttonRow)}>
+                        null :
+                        (<Box className={classNames(styles.bottomAreaItem, styles.buttonRow)}>
                             <button onClick={this.handleNewExample}>Train</button>
                             <button onClick={this.handleGoBack}>Back</button>
-                        </Box>
-                    }
+                        </Box>)}
                 </Box>
             </Box>
         );

@@ -26,6 +26,9 @@ class LabelEditor extends React.Component {
             this.props.onRenameLabel(this.props.activeLabel, input.target.value);
         }
     }
+    handleDeleteLoadedExamples () { //delete the examples which were loaded with the project (as a group)
+        this.props.onDeleteExample(-1);
+    }
 
     render () {
         return (
@@ -41,7 +44,7 @@ class LabelEditor extends React.Component {
                                     <CloseButton
                                         className={styles.deleteButton}
                                         size={CloseButton.SIZE_SMALL}
-                                        onClick={this.props.onDeleteLoadedExamples}
+                                        onClick={this.handleDeleteLoadedExamples}
                                     />
                                     {this.props.classifierData[this.props.activeLabel].length-this.props.imageData[this.props.activeLabel].length} examples loaded from file
                                 </Box>
@@ -74,7 +77,6 @@ class LabelEditor extends React.Component {
 LabelEditor.propTypes = {
     onAddExamples: PropTypes.func,
     onDeleteExample: PropTypes.func,
-    onDeleteLoadedExamples: PropTypes.func,
     onEditModel: PropTypes.func,
     onRenameLabel: PropTypes.func,
     activeLabel: PropTypes.string,

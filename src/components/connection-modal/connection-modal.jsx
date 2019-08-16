@@ -39,7 +39,6 @@ const ConnectionModalComponent = props => (
             {props.phase === PHASES.labelEditor && <LabelEditor 
                                                         onAddExamples={props.onAddExamples}
                                                         onDeleteExample={props.onDeleteExample}
-                                                        onDeleteLoadedExamples={props.onDeleteLoadedExamples}
                                                         onEditModel={props.onEditModel}
                                                         onRenameLabel={props.onRenameLabel}
                                                         activeLabel={props.activeLabel}

@@ -24,10 +24,10 @@ class ImageTile extends React.Component {
             ctx.putImageData(this.props.image, 0, 0);
         }
     }
-    componentDidUpdate () {
+    componentDidUpdate () { //make sure the canvas updates (when an example is deleted and all examples need to move over to fill the space, for example)
         this.setCanvas(this.canvas);
     }
-    handleDeleteExample () {
+    handleDeleteExample () {    //delete this example
         this.props.onDeleteExample(this.props.id);
     }
 

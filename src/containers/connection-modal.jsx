@@ -20,7 +20,6 @@ class ConnectionModal extends React.Component {
             'handleAddExamples',
             'handleNewExamples',
             'handleDeleteExample',
-            'handleDeleteLoadedExamples',
             'handleClearAll',
             'handleCancel',
             'handleHelp'
@@ -69,25 +68,18 @@ class ConnectionModal extends React.Component {
             phase: PHASES.exampleEditor
         });
     }
-    handleNewExamples (examples, incrementLabelNum) {    //add new examples: emit an event so the example is added in the vm, switch back to label editor, reset model data with the new example
+    handleNewExamples (examples, incrementLabelNum) {    //add new examples: emit an event so the example is added in the vm, reset model data with the new example
         this.props.vm.runtime.emit('NEW_EXAMPLES', examples, this.state.activeLabel);
         if (incrementLabelNum) {
             this.props.vm.runtime.modelData.nextLabelNumber++;
         }
         this.setState({
             nextLabelNumber: incrementLabelNum ? ++this.state.nextLabelNumber : this.state.nextLabelNumber,
-            imageData: this.props.vm.runtime.modelData.imageData,
-            phase: PHASES.labelEditor
+            imageData: this.props.vm.runtime.modelData.imageData
         });
     }
-    handleDeleteExample (exampleNum) {
+    handleDeleteExample (exampleNum) {  //delete an example: emit an event so the example is deleted in the vm, reset model data with the deleted example
         this.props.vm.runtime.emit('DELETE_EXAMPLE', this.state.activeLabel, exampleNum);
-        this.setState({
-            imageData: this.props.vm.runtime.modelData.imageData
-        })
-    }
-    handleDeleteLoadedExamples () {
-        this.props.vm.runtime.emit('DELETE_LOADED_EXAMPLES', this.state.activeLabel);
         this.setState({
             imageData: this.props.vm.runtime.modelData.imageData
         })
@@ -128,7 +120,6 @@ class ConnectionModal extends React.Component {
                 onAddExamples={this.handleAddExamples}
                 onNewExamples={this.handleNewExamples}
                 onDeleteExample={this.handleDeleteExample}
-                onDeleteLoadedExamples={this.handleDeleteLoadedExamples}
                 onClearAll={this.handleClearAll}
                 imageData={this.state.imageData}
                 classifierData={this.props.vm.runtime.modelData.classifierData}
